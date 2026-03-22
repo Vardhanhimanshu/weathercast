@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyCast | Responsive Weather System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        // Check if user is logged in before rendering the page
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || !user.name) {
+            window.location.href = 'login.html'; // Redirects immediately if no user is found
+        }
+    </script>
+
+    <style>
+        :root {
+            /* --- NEW LIGHT THEME VARIABLES --- */
+            --bg-gradient: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%); /* Soft light sky */
+            --glass: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --text-color: #2c3e50; /* Dark slate for readability on light bg */
+            --text-secondary: #546e7a;
+            --accent: #007bff; /* Clear, visible blue for accents */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER & NAVIGATION (Matched to other pages) --- */
+        header {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(15px);
+            padding: 1rem 5%;
+            display: flex; 
+            justify-content: space-between;
+            align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .logo { 
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            color: var(--accent); 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer; 
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        nav ul { display: flex; list-style: none; gap: 20px; align-items: center; }
+        nav a { text-decoration: none; color: var(--text-color); font-weight: 500; transition: 0.3s; position: relative; }
+        nav a:hover { color: var(--accent); }
+        
+        nav a.active {
+            font-weight: 700;
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .login-btn {
+            background: var(--accent); color: #fff !important; padding: 8px 20px;
+            border-radius: 20px; font-weight: bold; transition: transform 0.2s;
+            text-decoration: none; cursor: pointer; border: none; font-size: 1rem;
+        }
+        .login-btn:hover { transform: scale(1.05); }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        /* --- SEARCH BAR --- */
+        .search-container { padding: 2rem 1rem; display: flex; justify-content: center; }
+        .search-box {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 5px 20px;
+            display: flex; width: 100%; max-width: 500px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .search-box input { background: none; border: none; color: var(--text-color); padding: 10px; width: 100%; outline: none; font-size: 1rem;}
+        .search-box input::placeholder { color: var(--text-secondary); }
+        .search-box button { background: none; border: none; color: var(--accent); cursor: pointer; padding: 10px; font-size: 1.2rem; }
+
+        /* --- MAIN CONTENT --- */
+        main { flex: 1; padding: 0 5% 3rem; max-width: 1200px; margin: 0 auto; width: 100%; }
+        .weather-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+
+        .current-weather {
+            background: var(--glass);
+            padding: 3rem 2rem;
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .city-title { font-size: 2.2rem; margin-bottom: 0.5rem; }
+        .temp-display { font-size: 5rem; font-weight: 800; margin: 1rem 0; color: var(--accent); }
+        .condition { font-size: 1.2rem; color: var(--text-secondary); text-transform: capitalize; font-weight: 500; }
+
+        .forecast-card { 
+            background: var(--glass); padding: 2rem; border-radius: 30px; 
+            border: 1px solid var(--glass-border); box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .forecast-card h3 { color: var(--text-color); margin-bottom: 10px; }
+        .forecast-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 1.5rem; }
+        .forecast-row { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px; background: rgba(255,255,255,0.4); border-radius: 15px; 
+            font-weight: 500;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: rgba(255, 255, 255, 0.4); padding: 3rem 5%;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;
+            border-top: 1px solid var(--glass-border);
+        }
+        footer h3 { color: var(--text-color); margin-bottom: 10px; }
+        .social-icons { display: flex; gap: 15px; margin-top: 1rem; }
+        .social-icons a {
+            width: 40px; height: 40px; background: white; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; color: var(--accent); 
+            text-decoration: none; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .social-icons a:hover { background: var(--accent); color: #fff; transform: translateY(-5px); }
+        .map-wrapper { height: 180px; border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); }
+
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media (max-width: 850px) {
+            .weather-hero { grid-template-columns: 1fr; }
+            .menu-toggle { display: block; }
+            .header-right { gap: 15px; }
+            
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 20px;
+                gap: 15px;
+                text-align: center;
+                border-bottom: 1px solid var(--glass-border);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+
+            nav ul.active { display: flex; }
+        }
+
+        @media (max-width: 480px) {
+            .temp-display { font-size: 3.5rem; }
+            .city-title { font-size: 1.6rem; }
+            header { flex-direction: column; align-items: flex-start; padding: 1.5rem 20px; gap: 15px;}
+            .header-right { width: 100%; justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo" onclick="location.reload()">
+            <i class="fas fa-wind"></i> SkyCast
+        </div>
+        
+        <div class="header-right">
+            <nav>
+                <ul id="navLinks">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                </ul>
+            </nav>
+            <button class="login-btn" id="authBtn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="Enter city name...">
+            <button onclick="searchCity()"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+
+    <main>
+        <div class="weather-hero">
+            <div class="current-weather">
+                <h1 id="cityName" class="city-title">Detecting...</h1>
+                <div id="weatherIcon" style="font-size: 4rem; color: var(--accent);">
+                    <i class="fas fa-satellite-dish fa-spin"></i>
+                </div>
+                <div class="temp-display"><span id="currTemp">--</span>°</div>
+                <p id="currDesc" class="condition">Locating coordinates...</p>
+                <div style="margin-top: 2rem; display: flex; justify-content: space-around; font-weight: 500; color: var(--text-secondary);">
+                    <span><i class="fas fa-droplet"></i> Hum: <span id="hum">--</span>%</span>
+                    <span><i class="fas fa-wind"></i> Wind: <span id="wind">--</span>km/h</span>
+                </div>
+            </div>
+
+            <div class="forecast-card">
+                <h3>5-Day Forecast</h3>
+                <div id="forecastList" class="forecast-grid"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div>
+            <h3>SkyCast Info</h3>
+            <p style="color: var(--text-secondary);">Accurate live weather tracking for your location.</p>
+            <div class="social-icons">
+                <a href="facebook.html"><i class="fab fa-facebook-f"></i></a>
+                <a href="instagram.html"><i class="fab fa-instagram"></i></a>
+                <a href="gmail.html"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+        <div>
+            <h3>Local Map View</h3>
+            <div class="map-wrapper">
+                <iframe id="mapFrame" width="100%" height="100%" frameborder="0" src=""></iframe>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const weatherMap = {
+            0: "Clear Sky", 1: "Mainly Clear", 2: "Partly Cloudy", 3: "Overcast",
+            45: "Foggy", 61: "Rainy", 71: "Snowy", 95: "Thunderstorm"
+        };
+
+        // Mobile Menu Toggle Function
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // --- UPDATE UI WITH LOGGED IN USER NAME ---
+        function updateAuthUI() {
+            const authBtn = document.getElementById('authBtn');
+            const user = JSON.parse(localStorage.getItem('user')); 
+            if (user && user.name) {
+                // Shows the user's name and changes button to act as a logout
+                authBtn.innerHTML = `<i class="fas fa-user"></i> ${user.name} (Logout)`;
+            }
+        }
+
+        function logout() {
+            if(confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem('user'); // Clear session
+                window.location.href = 'login.html'; // Kick back to login
+            }
+        }
+
+        // Improved Reverse Geocoding
+        async function getCityName(lat, lon) {
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                const data = await res.json();
+                const a = data.address;
+                return a.city || a.town || a.village || a.suburb || a.county || "My Location";
+            } catch (e) { return "My Location"; }
+        }
+
+        async function fetchWeather(lat, lon, name) {
+            document.getElementById('cityName').innerText = name;
+            // Update Map
+            document.getElementById('mapFrame').src = `https://maps.google.com/maps?q=${lat},${lon}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+
+            try {
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,weathercode&timezone=auto`);
+                const data = await res.json();
+
+                document.getElementById('currTemp').innerText = Math.round(data.current_weather.temperature);
+                document.getElementById('currDesc').innerText = weatherMap[data.current_weather.weathercode] || "Cloudy";
+                document.getElementById('wind').innerText = data.current_weather.windspeed;
+                document.getElementById('hum').innerText = "65"; 
+                document.getElementById('weatherIcon').innerHTML = '<i class="fas fa-cloud-sun"></i>';
+
+                const forecastList = document.getElementById('forecastList');
+                forecastList.innerHTML = "";
+                const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                
+                for(let i=1; i<=5; i++) {
+                    const date = new Date(data.daily.time[i]);
+                    forecastList.innerHTML += `
+                        <div class="forecast-row">
+                            <span>${days[date.getDay()]}</span>
+                            <i class="fas fa-cloud-sun" style="color:var(--accent)"></i>
+                            <span>${Math.round(data.daily.temperature_2m_max[i])}°C</span>
+                        </div>
+                    `;
+                }
+            } catch (e) { console.error("Error loading weather"); }
+        }
+
+        async function searchCity() {
+            const city = document.getElementById('cityInput').value;
+            if(!city) return;
+            document.getElementById('cityName').innerText = "Searching...";
+            const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${city}`);
+            const data = await res.json();
+            if(data.length > 0) fetchWeather(data[0].lat, data[0].lon, data[0].display_name.split(',')[0]);
+        }
+
+        window.onload = () => {
+            updateAuthUI(); // Update the button to show the user's name
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async p => {
+                        const name = await getCityName(p.coords.latitude, p.coords.longitude);
+                        fetchWeather(p.coords.latitude, p.coords.longitude, name);
+                    },
+                    () => fetchWeather(40.71, -74.00, "New York")
+                );
+            } else {
+                fetchWeather(40.71, -74.00, "New York");
+            }
+        };
+    </script>
+</body>
+</html>
