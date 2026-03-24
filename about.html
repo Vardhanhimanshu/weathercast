@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | SkyCast</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.2);
+            --text-color: #ffffff;
+            --text-secondary: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--primary-gradient);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between; 
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .logo { 
+            font-size: 1.8rem; 
+            font-weight: 900; 
+            letter-spacing: -0.5px; 
+            color: #00e5ff; 
+            display: flex; 
+            align-items: center; 
+            cursor: pointer; 
+            white-space: nowrap; 
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a.active {
+            font-weight: 700;
+            color: #fff;
+            border-bottom: 2px solid #fff;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #fff;
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .login-btn {
+            background: white;
+            color: #764ba2;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s;
+            white-space: nowrap;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        /* --- ABOUT PAGE SPECIFIC CONTENT --- */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 20px;
+        }
+
+        .about-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: var(--glass-border);
+            border-radius: 20px;
+            padding: 50px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .about-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .about-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .content-block {
+            line-height: 1.6;
+        }
+
+        .content-block h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            border-left: 4px solid white;
+            padding-left: 15px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-box {
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .feature-box i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 40px 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            align-items: center;
+        }
+
+        .social-column h3 {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px);
+            background: white;
+        }
+
+        .social-icon:hover.fb { color: #1877F2; }
+        .social-icon:hover.insta { color: #E4405F; }
+        .social-icon:hover.gmail { color: #DB4437; }
+
+        .map-container {
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* --- MOBILE RESPONSIVE (With Hamburger Menu) --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 20px;
+            }
+            
+            .logo { font-size: 1.4rem; }
+            .menu-toggle { display: block; }
+            
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+            }
+
+            nav ul {
+                display: none; /* Hidden by default */
+                flex-direction: column;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 20px;
+                gap: 20px;
+                text-align: center;
+                border-bottom: 1px solid var(--glass-border);
+            }
+
+            nav ul.active { display: flex; } /* Shown when hamburger is clicked */
+            
+            .login-btn { display: block; width: fit-content; margin: 0 auto; }
+
+            main { padding: 30px 15px; }
+            .about-card { padding: 30px 20px; }
+            .about-header h1 { font-size: 2rem; }
+            
+            footer { grid-template-columns: 1fr; text-align: center; }
+            .social-icons { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo" onclick="window.location.href='index.html'">
+            <i class="fas fa-cloud-sun" style="font-size: 2.2rem; margin-right: 5px;"></i> SkyCast
+        </div>
+        
+        <div class="header-right">
+            <nav>
+                <ul id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html" class="active">About</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="login.html" class="login-btn">Login</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+        </div>
+    </header>
+
+    <main>
+        <div class="about-card">
+            <div class="about-header">
+                <h1>About SkyCast</h1>
+                <p>Bringing you the future of weather forecasting.</p>
+            </div>
+
+            <div class="about-content">
+                <div class="content-block">
+                    <h2>Our Mission</h2>
+                    <p>
+                        At SkyCast, we believe weather data should be beautiful, accessible, and accurate. 
+                        We started this project with a simple goal: to replace the boring, cluttered weather apps 
+                        of the past with a clean, glassmorphism-inspired interface that works instantly on any device.
+                    </p>
+                </div>
+
+                <div class="content-block">
+                    <h2>Why Choose Us?</h2>
+                    <div class="features-grid">
+                        <div class="feature-box">
+                            <i class="fas fa-bolt"></i>
+                            <h3>Real-Time</h3>
+                            <p>Instant data updates via Open-Meteo API.</p>
+                        </div>
+                        <div class="feature-box">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <h3>Auto-Location</h3>
+                            <p>Detects your location automatically.</p>
+                        </div>
+                        <div class="feature-box">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h3>Responsive</h3>
+                            <p>Looks great on Mobile, Tablet & Desktop.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-block">
+                    <h2>The Technology</h2>
+                    <p>
+                        SkyCast is built using vanilla HTML5, CSS3, and JavaScript. 
+                        We utilize the Open-Meteo API for weather data, which allows us to provide accurate forecasts 
+                        without tracking user data or requiring API keys. The background effects are created using 
+                        pure CSS gradients and backdrop-filters.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="social-column">
+            <h3>Connect With Us</h3>
+            <div class="social-icons">
+                <a href="facebook.html" class="social-icon fb"><i class="fab fa-facebook-f"></i></a>
+                <a href="instagram.html" class="social-icon insta"><i class="fab fa-instagram"></i></a>
+                <a href="gmail.html" class="social-icon gmail"><i class="fas fa-envelope"></i></a>
+            </div>
+            <p style="margin-top: 15px; font-size: 0.8rem; opacity: 0.6;">© 2026 SkyCast Weather Systems</p>
+        </div>
+
+        <div class="map-column">
+            <h3>Our Global Presence</h3>
+            <div class="map-container">
+                <iframe 
+                    id="gmap_canvas"
+                    src="https://maps.google.com/maps?q=New%20York&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                    scrolling="no">
+                </iframe>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- MOBILE MENU TOGGLE ---
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // --- MAP LOGIC FOR FOOTER ---
+        window.onload = initMap;
+
+        function initMap() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(updateMapPosition, handleError);
+            }
+        }
+
+        function updateMapPosition(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const mapFrame = document.getElementById('gmap_canvas');
+            
+            // Update iframe src with user location
+            // Fixed template literal formatting
+            mapFrame.src = `https://maps.google.com/maps?q=${lat},${lon}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+        }
+
+        function handleError(error) {
+            console.log("Location access denied or error. Showing default map.");
+        }
+    </script>
+</body>
+</html>

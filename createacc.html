@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyCast | Create Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- PERSISTENT CORE STYLES --- */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            --accent: #00d2ff;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --error: #ff4b2b;
+            --success: #2ecc71;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- HEADER & FOOTER --- */
+        header, footer {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            padding: 1.5rem 5%;
+            text-align: center;
+        }
+
+        /* --- SIGN UP SECTION --- */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .signup-card {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.4);
+        }
+
+        .signup-card h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        .signup-card p {
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 30px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            outline: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--accent);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            border: none;
+            border-radius: 12px;
+            color: #000;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 210, 255, 0.3);
+        }
+
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            opacity: 0.8;
+            cursor: pointer;
+        }
+
+        .terms input { margin-top: 3px; }
+
+        .error-msg {
+            color: var(--error);
+            font-size: 0.75rem;
+            margin-top: -15px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .footer-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.9rem;
+        }
+
+        .footer-link a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Mobile Responsive adjustment */
+        @media (max-width: 480px) {
+            .form-row { grid-template-columns: 1fr; }
+            .signup-card { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 style="color: var(--accent); font-size: 1.5rem; letter-spacing: 1px;">SKYCAST PORTAL</h1>
+    </header>
+
+    <main>
+        <div class="signup-card">
+            <h2>Join SkyCast</h2>
+            <p>Create an account to save locations and get personalized alerts.</p>
+
+            <form id="signupForm">
+                <div class="form-row">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="firstName" placeholder="First Name" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="lastName" placeholder="Last Name" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="Email Address" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Password (min 8 chars)" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-shield-alt"></i>
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                </div>
+                <p id="passwordError" class="error-msg">Passwords do not match!</p>
+
+                <label class="terms">
+                    <input type="checkbox" required>
+                    <span>I agree to the Terms of Service and Privacy Policy for atmospheric data usage.</span>
+                </label>
+
+                <button type="submit" class="signup-btn">Create Free Account</button>
+            </form>
+
+            <div class="footer-link">
+                Already have an account? <a href="login.html">Log In</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 SkyCast Global | Powered by Real-time Satellite Data</p>
+    </footer>
+
+    <script>
+        const signupForm = document.getElementById('signupForm');
+        const pass = document.getElementById('password');
+        const confirmPass = document.getElementById('confirmPassword');
+        const errorMsg = document.getElementById('passwordError');
+
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Password matching logic
+            if (pass.value !== confirmPass.value) {
+                errorMsg.style.display = 'block';
+                confirmPass.style.borderColor = 'var(--error)';
+                return;
+            }
+
+            if (pass.value.length < 8) {
+                alert("Password must be at least 8 characters long.");
+                return;
+            }
+
+            // Success simulation
+            errorMsg.style.display = 'none';
+            const btn = document.querySelector('.signup-btn');
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Creating...';
+            btn.style.background = '#2ecc71';
+            
+            setTimeout(() => {
+                alert("Account created successfully! Welcome to SkyCast.");
+                window.location.href = 'index.html'; // Redirect to weather dashboard
+            }, 2000);
+        });
+
+        // Clear error when user starts typing again
+        confirmPass.addEventListener('input', () => {
+            errorMsg.style.display = 'none';
+            confirmPass.style.borderColor = 'var(--glass-border)';
+        });
+    </script>
+</body>
+</html>

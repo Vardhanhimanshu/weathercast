@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ | SkyCast Weather</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS VARIABLES & RESET (CONSISTENT) --- */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.2);
+            --text-color: #ffffff;
+            --text-secondary: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--primary-gradient);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between; 
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Updated Logo Styles */
+        .logo { 
+            font-size: 1.8rem; 
+            font-weight: 900; 
+            letter-spacing: -0.5px; 
+            color: #00e5ff; 
+            display: flex; 
+            align-items: center; 
+            cursor: pointer; 
+            white-space: nowrap; 
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a.active {
+            font-weight: 700;
+            color: #fff;
+            border-bottom: 2px solid #fff;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #fff;
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .login-btn {
+            background: white;
+            color: #764ba2;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s;
+            white-space: nowrap;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        /* --- FAQ PAGE CONTENT --- */
+        main {
+            flex: 1;
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .faq-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .faq-title h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .faq-container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .faq-item {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: var(--glass-border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .faq-question {
+            padding: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s;
+        }
+
+        .faq-question.active i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .faq-answer p {
+            padding: 20px;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 40px 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: auto;
+        }
+
+        .social-column h3 {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icon {
+            width: 40px; height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            color: white; text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .social-icon:hover { background: white; transform: translateY(-3px); }
+        .social-icon:hover.fb { color: #1877F2; }
+        .social-icon:hover.insta { color: #E4405F; }
+        .social-icon:hover.gmail { color: #DB4437; }
+
+        .map-container {
+            width: 100%; height: 180px;
+            border-radius: 10px; overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        iframe { width: 100%; height: 100%; border: 0; }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 20px;
+            }
+            
+            .logo { font-size: 1.4rem; }
+            .menu-toggle { display: block; }
+            
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 20px;
+                gap: 20px;
+                text-align: center;
+                border-bottom: 1px solid var(--glass-border);
+            }
+
+            nav ul.active { display: flex; }
+            
+            .login-btn { display: block; width: fit-content; margin: 0 auto; }
+
+            main { padding: 30px 15px; }
+            .faq-title h1 { font-size: 2rem; }
+            
+            footer { grid-template-columns: 1fr; text-align: center; }
+            .social-icons { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo" onclick="window.location.href='index.html'">
+            <i class="fas fa-cloud-sun" style="font-size: 2.2rem; margin-right: 5px;"></i> SkyCast
+        </div>
+        
+        <div class="header-right">
+            <nav>
+                <ul id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="faq.html" class="active">FAQ</a></li>
+                    <li><a href="login.html" class="login-btn">Login</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+        </div>
+    </header>
+
+    <main>
+        <div class="faq-title">
+            <h1>Frequently Asked Questions</h1>
+            <p>How can we help you today?</p>
+        </div>
+
+        <div class="faq-container">
+            <div class="faq-item">
+                <button class="faq-question">
+                    How accurate is the weather data?
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>We use the Open-Meteo API, which aggregates data from global meteorological models (like ECMWF and GFS). While no forecast is 100% perfect, our data is updated hourly to provide the most precise real-time conditions available.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    Does the auto-locate feature track my movement?
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>No. The auto-locate feature uses your browser's Geolocation API only when you load the page to show your local weather. We do not store your location history on our servers.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    Why is the map showing a different city?
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>If you haven't granted "Location Permissions" to the browser, the system defaults to a standard location (usually a major capital). Please click "Allow" when the browser asks for your location to see your specific area.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    Can I use SkyCast on my phone?
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes! SkyCast is built with a responsive mobile-first design. It works perfectly on iPhones, Android devices, and tablets without needing to download an app from the store.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="social-column">
+            <h3>Connect With Us</h3>
+            <div class="social-icons">
+                <a href="facebook.html" class="social-icon fb"><i class="fab fa-facebook-f"></i></a>
+                <a href="instagram.html" class="social-icon insta"><i class="fab fa-instagram"></i></a>
+                <a href="gmail.html" class="social-icon gmail"><i class="fas fa-envelope"></i></a>
+            </div>
+            <p style="margin-top: 15px; font-size: 0.8rem; opacity: 0.6;">© 2026 SkyCast Weather Systems</p>
+        </div>
+
+        <div class="map-column">
+            <h3>Your Location</h3>
+            <div class="map-container">
+                <iframe id="footer-map" src="https://maps.google.com/maps?q=London&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        const questions = document.querySelectorAll('.faq-question');
+
+        questions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                question.classList.toggle('active');
+
+                if (question.classList.contains('active')) {
+                    answer.style.maxHeight = answer.scrollHeight + "px";
+                } else {
+                    answer.style.maxHeight = "0";
+                }
+                
+                questions.forEach(other => {
+                    if (other !== question && other.classList.contains('active')) {
+                        other.classList.remove('active');
+                        other.nextElementSibling.style.maxHeight = "0";
+                    }
+                });
+            });
+        });
+
+        window.onload = function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    document.getElementById('footer-map').src = `https://maps.google.com/maps?q=${lat},${lon}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+                });
+            }
+        };
+    </script>
+</body>
+</html>

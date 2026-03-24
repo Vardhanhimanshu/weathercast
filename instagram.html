@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- RESET & BASE STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fafafa;
+            color: #262626;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- MAIN LAYOUT --- */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        /* Mockup hidden on mobile, visible on desktop */
+        .phone-mockup {
+            display: none;
+            width: 380px;
+            height: 580px;
+            background-image: url('https://www.instagram.com/static/images/homepage/screenshots/screenshot1.png/fd1d92e744c9.png');
+            background-size: cover;
+            margin-right: 32px;
+        }
+
+        .auth-container {
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Card Boxes */
+        .box {
+            background-color: #fff;
+            border: 1px solid #dbdbdb;
+            padding: 40px 10px 20px;
+            text-align: center;
+        }
+
+        .logo {
+            width: 175px;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+
+        /* Form Styling */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            padding: 0 30px;
+        }
+
+        .input-field {
+            background: #fafafa;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            padding: 9px 8px;
+            margin-bottom: 6px;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: #a8a8a8;
+        }
+
+        .btn-login {
+            background-color: #0095f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 7px 0;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-login:disabled {
+            background-color: rgba(0, 149, 246, 0.3);
+            cursor: default;
+        }
+
+        /* Divider (OR) */
+        .divider {
+            display: flex;
+            align-items: center;
+            padding: 20px 30px;
+        }
+
+        .divider .line {
+            flex: 1;
+            height: 1px;
+            background-color: #dbdbdb;
+        }
+
+        .divider span {
+            font-size: 13px;
+            color: #8e8e8e;
+            font-weight: 600;
+            padding: 0 18px;
+        }
+
+        /* Facebook Login & Forgot */
+        .fb-login {
+            color: #385185;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .forgot-link {
+            font-size: 12px;
+            color: #00376b;
+            text-decoration: none;
+        }
+
+        /* Signup Box */
+        .signup-box {
+            padding: 25px;
+            font-size: 14px;
+        }
+
+        .signup-box a {
+            color: #0095f6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* App Getters */
+        .app-get {
+            text-align: center;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .store-btns {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .store-btns img {
+            height: 40px;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 20px 15px 50px;
+            text-align: center;
+            font-size: 12px;
+            color: #8e8e8e;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #8e8e8e;
+        }
+
+        /* Desktop Media Query */
+        @media (min-width: 875px) {
+            .phone-mockup {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <div class="phone-mockup"></div>
+
+        <div class="auth-container">
+            <div class="box">
+                <img class="logo" src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a2511101835.png" alt="Instagram">
+                
+                <form class="login-form" id="igLoginForm">
+                    <input type="text" id="username" class="input-field" placeholder="Phone number, username or email" required>
+                    <input type="password" id="password" class="input-field" placeholder="Password" required>
+                    <button type="submit" class="btn-login" id="loginBtn" disabled>Log in</button>
+                </form>
+
+                <div class="divider">
+                    <div class="line"></div>
+                    <span>OR</span>
+                    <div class="line"></div>
+                </div>
+
+                <a href="#" class="fb-login">
+                    <i class="fab fa-facebook-square" style="font-size: 18px;"></i>
+                    Log in with Facebook
+                </a>
+
+                <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
+
+            <div class="box signup-box">
+                Don't have an account? <a href="#">Sign up</a>
+            </div>
+
+            <div class="app-get">
+                <p>Get the app.</p>
+                <div class="store-btns">
+                    <img src="https://static.cdninstagram.com/rsrc.php/v3/yt/r/Y2q97Te2mSg.png" alt="App Store">
+                    <img src="https://static.cdninstagram.com/rsrc.php/v3/zy/r/c5qv7s9C3zJ.png" alt="Google Play">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <ul class="footer-links">
+            <li><a href="#">Meta</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Jobs</a></li>
+            <li><a href="#">Help</a></li>
+            <li><a href="#">API</a></li>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Top accounts</a></li>
+            <li><a href="#">Locations</a></li>
+            <li><a href="#">Instagram Lite</a></li>
+        </ul>
+        <div class="copyright">
+            © 2026 Instagram from Meta
+        </div>
+    </footer>
+
+    <script>
+        const userInp = document.getElementById('username');
+        const passInp = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+
+        // Logic to enable/disable button based on input (Like real Instagram)
+        function toggleButton() {
+            if (userInp.value.length > 0 && passInp.value.length >= 6) {
+                loginBtn.disabled = false;
+                loginBtn.style.opacity = "1";
+            } else {
+                loginBtn.disabled = true;
+                loginBtn.style.opacity = "0.7";
+            }
+        }
+
+        userInp.addEventListener('input', toggleButton);
+        passInp.addEventListener('input', toggleButton);
+
+        document.getElementById('igLoginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('This is a demo. Login for ' + userInp.value + ' simulated!');
+        });
+    </script>
+</body>
+</html>

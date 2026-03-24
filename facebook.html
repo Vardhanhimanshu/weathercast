@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook – log in or sign up</title>
+    <style>
+        /* --- CSS Reset & Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- Main Layout --- */
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 980px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Branding Side */
+        .brand-section {
+            width: 500px;
+            padding-right: 32px;
+            margin-bottom: 90px;
+        }
+
+        .brand-section img {
+            height: 106px;
+            margin: -28px; /* Adjusting whitespace in the SVG logo */
+        }
+
+        .brand-section h2 {
+            font-size: 28px;
+            font-weight: normal;
+            line-height: 32px;
+            margin-top: 10px;
+        }
+
+        /* Login Card Side */
+        .login-card {
+            background-color: #fff;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+            padding: 20px;
+            width: 396px;
+            text-align: center;
+        }
+
+        .login-card input {
+            width: 100%;
+            height: 52px;
+            padding: 14px 16px;
+            font-size: 17px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .login-card input:focus {
+            border-color: #1877f2;
+            box-shadow: 0 0 0 2px #e7f3ff;
+        }
+
+        .login-btn {
+            width: 100%;
+            background-color: #1877f2;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 48px;
+            cursor: pointer;
+            margin-bottom: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .login-btn:hover {
+            background-color: #166fe5;
+        }
+
+        .forgot-link {
+            color: #1877f2;
+            font-size: 14px;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #dadde1;
+            margin-bottom: 20px;
+        }
+
+        .create-btn {
+            background-color: #42b72a;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 17px;
+            font-weight: bold;
+            padding: 0 16px;
+            line-height: 48px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .create-btn:hover {
+            background-color: #36a420;
+        }
+
+        .create-page-footer {
+            margin-top: 28px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .create-page-footer a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .create-page-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #fff;
+            padding: 20px 0;
+            color: #737373;
+            font-size: 12px;
+        }
+
+        .footer-content {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #dddfe2;
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #8a8d91;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 40px;
+            }
+            .brand-section {
+                width: 100%;
+                padding-right: 0;
+                margin-bottom: 40px;
+            }
+            .brand-section h2 {
+                font-size: 24px;
+                width: 100%;
+            }
+            .brand-section img {
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <div class="container">
+            <div class="brand-section">
+                <img src="https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu_m_aG69.svg" alt="Facebook">
+                <h2>Facebook helps you connect and share with the people in your life.</h2>
+            </div>
+
+            <div class="form-section">
+                <div class="login-card">
+                    <form id="loginForm">
+                        <input type="text" id="email" placeholder="Email address or phone number" required>
+                        <input type="password" id="pass" placeholder="Password" required>
+                        <button type="submit" class="login-btn">Log in</button>
+                        <a href="forgot password.html" class="forgot-link">Forgotten password?</a>
+                        <hr>
+                        <button type="button" class="create-btn" onclick="alert('Redirecting to Sign Up...')">Create new account</button>
+                    </form>
+                </div>
+                <div class="create-page-footer">
+                    <p><a href="#">Create a Page</a> for a celebrity, brand or business.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <ul class="footer-links">
+                <li>English (UK)</li>
+                <li><a href="#">हिन्दी</a></li>
+                <li><a href="#">ਪੰਜਾਬੀ</a></li>
+                <li><a href="#">اردو</a></li>
+                <li><a href="#">বাংলা</a></li>
+                <li><a href="#">Español</a></li>
+            </ul>
+            <p style="margin-top: 10px;">Meta © 2026</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple Form Submission Logic
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('pass').value;
+
+            // Simple validation feedback
+            if(email && pass) {
+                console.log("Login Attempt:", { email, pass });
+                alert("Login demo successful! (Check console)");
+            }
+        });
+    </script>
+</body>
+</html>
